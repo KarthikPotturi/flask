@@ -26,7 +26,7 @@ class user_model():
             return make_response({"message":"No data found"},204)
     
     def user_addone_model(self,data):
-        self.cur.execute(f"INSERT INTO user_table(name, email, phone, role, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role']}', '{data['password']}')")
+        self.cur.execute(f"INSERT INTO user_table(name, email, phone, role_id, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role_id']}', '{data['password']}')")
         return make_response({"message":"User created successfully"},201)
 
     def user_update_model(self,data):
@@ -78,6 +78,7 @@ class user_model():
     def user_login_model(self, data):
         self.cur.execute("select id, name, email, phone, avatar, role_id from user_table where email = '{}' and password = '{}'".format(data['email'],data['password']))
         result = self.cur.fetchall()
+        print(result)
         user_data = str(result[0])
         expiration_time = datetime.now() + timedelta(minutes=15)
         exp_eopch_time = int(expiration_time.timestamp())
