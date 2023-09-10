@@ -30,7 +30,7 @@ class user_model():
         return make_response({"message":"User created successfully"},201)
 
     def user_update_model(self,data):
-        self.cur.execute(f"update user_table set name='{data['name']}',email='{data['email']}',phone='{data['phone']}',role='{data['role']}',password='{data['password']}' where id={data['id']}")
+        self.cur.execute(f"update user_table set name='{data['name']}',email='{data['email']}',phone='{data['phone']}',role_id='{data['role_id']}',password='{data['password']}' where id={data['id']}")
         if self.cur.rowcount>0:
             return make_response({"message":"User updated successfully"},201)
         else:
