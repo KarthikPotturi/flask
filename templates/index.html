@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index_style.css')}}">
+    <!-- <script type="text/javascript" src="{{ url_for('static',filename='script/login_script.js')}}"></script> -->
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="center">
+        <h1>Login</h1>
+        <form id ="loginform" action="{{url_for('process')}}" method="POST">
+            <div class="txt_field">
+                <input type="text" id = "username"  name="username" required>
+                <span></span>
+                <label for="username">Username</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" id = "password" name="password" required>
+                <span></span>
+                <label for="password">Password</label>
+            </div>
+            <div class="forgot_password">Forgot Password ? Click <span><a href="forgot_password.html">here</a></span> to reset</div>
+            <input type="submit" value="Login" class="submit_button">
+            <div class="signup_link">
+                Not a member ?
+                <a href="{{ url_for('signup')}}">Sign Up</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

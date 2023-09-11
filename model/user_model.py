@@ -26,7 +26,8 @@ class user_model():
             return make_response({"message":"No data found"},204)
     
     def user_addone_model(self,data):
-        self.cur.execute(f"INSERT INTO user_table(name, email, phone, role_id, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role_id']}', '{data['password']}')")
+        #self.cur.execute(f"INSERT INTO user_table(name, email, phone, role_id, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role_id']}', '{data['password']}')")
+        self.cur.execute(f"INSERT INTO user_table(name, email, phone, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['password']}')")
         return make_response({"message":"User created successfully"},201)
 
     def user_update_model(self,data):
@@ -76,7 +77,7 @@ class user_model():
             return make_response({"message":"No records to update"},202)
     
     def user_login_model(self, data):
-        self.cur.execute("select id, name, email, phone, avatar, role_id from user_table where email = '{}' and password = '{}'".format(data['email'],data['password']))
+        self.cur.execute("select id, name, email, phone, avatar, role_id from user_table where email = '{}' and password = '{}'".format(data['username'],data['password']))
         result = self.cur.fetchall()
         print(result)
         user_data = str(result[0])

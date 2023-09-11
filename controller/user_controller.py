@@ -3,6 +3,7 @@ from model.user_model import user_model
 from model.auth_model import auth_model
 from flask import request, send_file
 from datetime import datetime
+from flask import render_template
 obj = user_model()
 auth = auth_model()
 
@@ -46,6 +47,16 @@ def user_upload_avatar_controller(uid):
 def user_get_avatar_controller(filename):
     return send_file('uploads/{}'.format(filename))
 
-@app.route('/user/login',methods=['POST'])
+@app.route('/user/login')
 def user_login_controller():
-    return obj.user_login_model(request.form)
+    return render_template("index.html")
+
+@app.route('/process',methods=['POST'])
+def process():
+    data = {"username":request.form['username'],"password":request.form['password']}
+    print(type(data))
+    return obj.user_login_model(data)
+
+@app.route('/user/signup',methods=['GET', 'POST'])
+def signup():
+    return render_template('signup.html')
