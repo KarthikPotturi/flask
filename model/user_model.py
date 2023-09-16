@@ -1,6 +1,6 @@
 import mysql.connector
 import json
-from flask import make_response
+from flask import make_response, flash, redirect, url_for, session
 from datetime import datetime, timedelta
 import jwt
 from config.config import dbconfig
@@ -28,7 +28,9 @@ class user_model():
     def user_addone_model(self,data):
         #self.cur.execute(f"INSERT INTO user_table(name, email, phone, role_id, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role_id']}', '{data['password']}')")
         self.cur.execute(f"INSERT INTO user_table(name, email, phone, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['password']}')")
-        return make_response({"message":"User created successfully"},201)
+        #return make_response({"message":"User created successfully"},201)
+        flash('User created successfully. Please login','success')
+        return redirect(url_for('user_login_controller'))
 
     def user_update_model(self,data):
         self.cur.execute(f"update user_table set name='{data['name']}',email='{data['email']}',phone='{data['phone']}',role_id='{data['role_id']}',password='{data['password']}' where id={data['id']}")
@@ -80,9 +82,17 @@ class user_model():
         self.cur.execute("select id, name, email, phone, avatar, role_id from user_table where email = '{}' and password = '{}'".format(data['username'],data['password']))
         result = self.cur.fetchall()
         print(result)
-        user_data = str(result[0])
-        expiration_time = datetime.now() + timedelta(minutes=15)
-        exp_eopch_time = int(expiration_time.timestamp())
-        payload = {"payload":user_data, "exp":exp_eopch_time}
-        token = jwt.encode(payload, "sri", algorithm="HS256")
-        return make_response({"token":token},200)
+        if result:
+            user_data = str(result[0])
+            expiration_time = datetime.now() + timedelta(minutes=15)
+            exp_eopch_time = int(expiration_time.timestamp())
+            payload = {"payload":user_data, "exp":exp_eopch_time}
+            token = jwt.encode(payload, "sri", algorithm="HS256")
+            return make_response({"token":token},200)
+        else:
+            return make_response({"message" : "Invalid credentials"},401)
+    
+    def user_logout_model(self):
+        session.clear()
+        flash('Log out successful','success')
+        return redirect(url_for('user_login_controller'))

@@ -10,7 +10,21 @@
 <body>
     <div class="center">
         <h1>Login</h1>
-        <form id ="loginform" action="{{url_for('process')}}" method="POST">
+        {% if messages %}
+        <div class="alert alert-success">
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if error_message %}
+        <div>
+            {{ error_message }}
+        </div>
+        {% endif %}
+        <form id ="loginform" action="{{ url_for('process') }}" method="POST">
             <div class="txt_field">
                 <input type="text" id = "username"  name="username" required>
                 <span></span>

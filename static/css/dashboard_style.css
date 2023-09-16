@@ -1,0 +1,44 @@
+*{
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: monospace;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background: linear-gradient(120deg, #4e9dd1, rgba(21, 147, 122, 0.267));
+    height: 100vh;
+}
+
+nav{
+    background: white;
+    height: 60px;
+    width: 100%;
+}
+
+label{
+    font-size: 16px;
+    line-height: 80px;
+    padding: 0 100px;
+}
+
+nav ul{
+    float: right;
+    margin-right: 20px;
+}
+
+nav ul li{
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 15px;
+    font-size: 16px;
+}
+
+button{
+    padding: 10px;
+    font-size: large;
+    background: white;
+    border: none;
+}

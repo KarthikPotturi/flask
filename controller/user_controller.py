@@ -1,9 +1,9 @@
 from app import app
 from model.user_model import user_model
 from model.auth_model import auth_model
-from flask import request, send_file
+from flask import request, send_file, get_flashed_messages, render_template, flash, redirect, url_for, session
+import jwt
 from datetime import datetime
-from flask import render_template
 obj = user_model()
 auth = auth_model()
 
@@ -49,14 +49,42 @@ def user_get_avatar_controller(filename):
 
 @app.route('/user/login')
 def user_login_controller():
-    return render_template("index.html")
+    messages = get_flashed_messages(category_filter=['success','danger'])
+    return render_template("index.html",messages=messages)
 
 @app.route('/process',methods=['POST'])
 def process():
     data = {"username":request.form['username'],"password":request.form['password']}
-    print(type(data))
-    return obj.user_login_model(data)
+    print(data)
+    token_response = obj.user_login_model(data)
+    print(token_response)
+    token = token_response.json.get('token',None)
+    if token:
+        jwt_decoded_token = jwt.decode(token, "sri", algorithms="HS256")
+        user_details_list = eval(jwt_decoded_token['payload'])
+        user_name = user_details_list['name']
+        print('User name after decoding the token {}'.format(user_name))
+        return render_template('dashboard.html', user_name= user_name.capitalize())
+    else:
+        flash('Login failed ! Invalid credentials','danger')
+        return redirect(url_for('user_login_controller'))
 
 @app.route('/user/signup',methods=['GET', 'POST'])
 def signup():
     return render_template('signup.html')
+
+@app.route('/user/dashboard',methods=['GET','POST'])
+def user_dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/user/aboutus',methods=['GET'])
+def about_us_controller():
+    return render_template('about.html')
+
+@app.route('/user/contact',methods=['GET'])
+def contact_us_controller():
+    return render_template('contact.html')
+
+@app.route('/user/logout')
+def logout_controller():
+    return obj.user_logout_model()
