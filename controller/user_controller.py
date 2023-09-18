@@ -16,9 +16,19 @@ def user_getall_controller():
 
 @app.route('/user/view_details/<user_id>')
 def user_view_details(user_id):
-    user_details = obj.user_view_details(user_id)
-    print(user_details.get('payload',None))
-    # return render_template('dashboard.html',user_details=user_details)
+    user_details_response = obj.user_view_details(user_id)
+    # if user_details_response.status_code == 200:
+    #     data = user_details_response.get_json()
+    #     user_details_data = data.get('payload',None)[0]
+    #     print(user_details_data[0])
+    #     if user_details_data:
+    #         return render_template('dashboard.html',user_details=user_details_data)
+
+    if user_details_response.status_code == 200:
+        data = user_details_response.json.get('payload')
+        print(data)
+        return render_template('dashboard.html',user_details=data)
+
 
 @app.route('/user/addone',methods=['POST'])
 #@auth.token_auth()

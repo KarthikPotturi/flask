@@ -22,16 +22,18 @@
         <h1>Dashboard</h1>
             <a href="{{ url_for('user_view_details', user_id = session['u_id'])}}">View your details</a>
             <table>
+                {% for user in user_details %}
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                 </tr>
                 <tr>
-                    <td>{{ user_details.name if user_details else '' }}</td>
-                    <td>{{ user_details.email if user_details else '' }}</td>
-                    <td>{{ user_details.phone if user_details else '' }}</td>
+                    <td>{{ user['name'] }}</td>
+                    <td>{{ user['email'] }}</td>
+                    <td>{{ user['phone'] }}</td>
                 </tr>
+            {% endfor %}
             </table>
         <p>User update controller</p>
         <p>User update controller</p>
