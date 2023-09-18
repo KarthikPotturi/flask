@@ -25,6 +25,16 @@ class user_model():
         else:
             return make_response({"message":"No data found"},204)
     
+    def user_view_details(self,user_id):
+        query = "select name, email, phone from user_table where id = '{}'".format(user_id)
+        self.cur.execute(query)
+        result = self.cur.fetchall()
+        print(query)
+        if len(result) > 0:
+            res = make_response({"payload": result},200)
+            print(res)
+            return res
+            
     def user_addone_model(self,data):
         #self.cur.execute(f"INSERT INTO user_table(name, email, phone, role_id, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['role_id']}', '{data['password']}')")
         self.cur.execute(f"INSERT INTO user_table(name, email, phone, password) VALUES('{data['name']}', '{data['email']}', '{data['phone']}', '{data['password']}')")

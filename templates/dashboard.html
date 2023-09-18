@@ -9,15 +9,33 @@
 <body>
     <div class = "header_section">
         <nav>
-            <label for="username">Hello {{ user_name }}</label>
+            <label for="username">Hello {{ session['user_name'].capitalize() }}</label>
             <ul>
-                <li><a href="{{ url_for('user_dashboard')}}">Home</a></li>
-                <li><a href="{{ url_for('about_us_controller')}}">About</a></li>
-                <li><a href="{{ url_for('contact_us_controller')}}">Contact Us</a></li>
-                <li><a href="{{ url_for('logout_controller')}}">Log Out</a></li>
+                <li><a href="{{ url_for('user_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('about_us_controller') }}">About</a></li>
+                <li><a href="{{ url_for('contact_us_controller') }}">Contact Us</a></li>
+                <li><a href="{{ url_for('logout_controller') }}">Log Out</a></li>
             </ul>
         </nav>
     </div>
-    <div class="center"></div>
+    <div class="center">
+        <h1>Dashboard</h1>
+            <a href="{{ url_for('user_view_details', user_id = session['u_id'])}}">View your details</a>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+                <tr>
+                    <td>{{ user_details.name if user_details else '' }}</td>
+                    <td>{{ user_details.email if user_details else '' }}</td>
+                    <td>{{ user_details.phone if user_details else '' }}</td>
+                </tr>
+            </table>
+        <p>User update controller</p>
+        <p>User update controller</p>
+        <p>User update controller</p>
+    </div>
 </body>
 </html>

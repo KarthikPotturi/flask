@@ -1,16 +1,24 @@
 from app import app
 from model.user_model import user_model
 from model.auth_model import auth_model
-from flask import request, send_file, get_flashed_messages, render_template, flash, redirect, url_for, session
+from flask import request, send_file, get_flashed_messages, render_template, flash, redirect, url_for, session, jsonify
 import jwt
 from datetime import datetime
 obj = user_model()
 auth = auth_model()
 
+app.secret_key = "sri"
+
 @app.route('/user/getall')
 @auth.token_auth()
 def user_getall_controller():
     return obj.user_getall_model()
+
+@app.route('/user/view_details/<user_id>')
+def user_view_details(user_id):
+    user_details = obj.user_view_details(user_id)
+    print(user_details.get('payload',None))
+    # return render_template('dashboard.html',user_details=user_details)
 
 @app.route('/user/addone',methods=['POST'])
 #@auth.token_auth()
@@ -55,16 +63,19 @@ def user_login_controller():
 @app.route('/process',methods=['POST'])
 def process():
     data = {"username":request.form['username'],"password":request.form['password']}
-    print(data)
+    # print(data)
     token_response = obj.user_login_model(data)
-    print(token_response)
+    # print(token_response)
     token = token_response.json.get('token',None)
     if token:
         jwt_decoded_token = jwt.decode(token, "sri", algorithms="HS256")
         user_details_list = eval(jwt_decoded_token['payload'])
         user_name = user_details_list['name']
-        print('User name after decoding the token {}'.format(user_name))
-        return render_template('dashboard.html', user_name= user_name.capitalize())
+        u_id = user_details_list['id']
+        session['user_name'] = user_name
+        session['u_id'] = u_id
+        print('User id after decoding the token {}'.format(u_id))
+        return redirect(url_for('user_dashboard'))
     else:
         flash('Login failed ! Invalid credentials','danger')
         return redirect(url_for('user_login_controller'))
@@ -75,7 +86,8 @@ def signup():
 
 @app.route('/user/dashboard',methods=['GET','POST'])
 def user_dashboard():
-    return render_template('dashboard.html')
+    if "user_name" in session:
+        return render_template('dashboard.html')
 
 @app.route('/user/aboutus',methods=['GET'])
 def about_us_controller():
