@@ -21,21 +21,35 @@
     <div class="center">
         <h1>Dashboard</h1>
             <a href="{{ url_for('user_view_details', user_id = session['u_id'])}}">View your details</a>
-            <table>
+            <form action="{{ url_for('user_patch_controller', id = session['u_id']) }}" method="POST" id = "userDetailsForm">
                 {% for user in user_details %}
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                </tr>
-                <tr>
-                    <td>{{ user['name'] }}</td>
-                    <td>{{ user['email'] }}</td>
-                    <td>{{ user['phone'] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        <p>User update controller</p>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <td><input type="text" name="name" value="{{ user['name'] }}" disabled></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td><input type="email" name="email" value="{{ user['email'] }}" disabled></td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td><input type="text" name="phone" value="{{ user['phone'] }}" disabled></td>
+                    </tr>
+                </table>
+                <button type="button" onclick="enableEdit()">Edit</button>
+                <button type="submit" id="saveButton" disabled>Save</button>
+                {% endfor %}
+            </form>
+            <script>
+                function enableEdit() {
+                    document.querySelectorAll('input[name="name"], input[name="email"], input[name="phone"]').forEach(input => {
+                        input.removeAttribute('disabled');
+                    });
+                    document.getElementById('saveButton').removeAttribute('disabled');
+                }
+            </script>
+            
         <p>User update controller</p>
         <p>User update controller</p>
     </div>
