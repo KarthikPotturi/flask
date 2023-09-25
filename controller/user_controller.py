@@ -100,3 +100,12 @@ def contact_us_controller():
 @app.route('/user/logout')
 def logout_controller():
     return obj.user_logout_model()
+
+@app.route('/user/reset_password',methods=['GET'])
+def reset_password_controller():
+    messages = get_flashed_messages(category_filter=['danger'])
+    return render_template('forgot_password.html',messages = messages)
+
+@app.route('/user/password_reset_controller',methods = ['POST'])
+def user_reset_password_controller():
+    return obj.user_reset_password_model(request.form)

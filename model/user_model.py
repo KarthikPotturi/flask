@@ -29,7 +29,6 @@ class user_model():
         query = "select name, email, phone from user_table where id = '{}'".format(user_id)
         self.cur.execute(query)
         result = self.cur.fetchall()
-        print(query)
         if len(result) > 0:
             res = make_response({"payload": result},200)
             print(res)
@@ -106,3 +105,19 @@ class user_model():
         session.clear()
         flash('Log out successful','success')
         return redirect(url_for('user_login_controller'))
+    
+    def user_reset_password_model(self,data):
+        print(data)
+        self.cur.execute("select * from user_table where email = '{}'".format(data['username']))
+        result = self.cur.fetchall()
+        if len(result) > 0:
+            self.cur.execute("update user_table set password = '{}' where email = '{}'".format(data['confirm_password'],data['username']))
+            if self.cur.rowcount > 0:
+                flash("User password updated successfully","success")
+                return redirect(url_for('user_login_controller'))
+            else:
+                flash("Incorrect username","danger")
+                return redirect(url_for('reset_password_controller'))
+        else:
+            flash('User not found','danger')
+            return redirect(url_for('reset_password_controller'))

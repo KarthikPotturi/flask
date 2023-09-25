@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/index_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index_style.css') }}">
     <!-- <script type="text/javascript" src="{{ url_for('static',filename='script/login_script.js')}}"></script> -->
     <title>Login Page</title>
 </head>
@@ -35,7 +35,7 @@
                 <span></span>
                 <label for="password">Password</label>
             </div>
-            <div class="forgot_password">Forgot Password ? Click <span><a href="forgot_password.html">here</a></span> to reset</div>
+            <div class="forgot_password">Forgot Password ? Click <span><a href="{{url_for('reset_password_controller')}}">here</a></span> to reset</div>
             <input type="submit" value="Login" class="submit_button">
             <div class="signup_link">
                 Not a member ?
